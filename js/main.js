@@ -72,7 +72,7 @@ function onload(arr){
   var world = new World()
 
   stage.update();
-  game.entities = {back,ship,compass,needle,wind};
+  game.entities = {back,ship,compass,needle,wind,world};
   requestAnimationFrame(loop);
 }
 
