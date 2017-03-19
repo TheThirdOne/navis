@@ -69,7 +69,8 @@ class View {
   
   render(gameState){
     this.moveWater(gameState.r,gameState.f);
-    //  game.entities.wind.rotation = getWindVectorAt(shipX, shipY).direction+game.entities.back.rotation
+    this.entities.wind.rotation = gameState.world.getWindVectorAt(gameState.ship.x, gameState.ship.y).direction-gameState.ship.rotation;
+    this.entities.needle.rotation = -gameState.ship.rotation;
     this.stage.update();
   }
   
@@ -77,7 +78,7 @@ class View {
     // Move forward
     this.entities.back.regX -= Math.sin(this.entities.back.rotation/180*Math.PI)*forward;
     this.entities.back.regY -= Math.cos(this.entities.back.rotation/180*Math.PI)*forward;
-  
+
     // and rotate
     this.entities.needle.rotation += rotation;
     this.entities.back.rotation+=rotation;

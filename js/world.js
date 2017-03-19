@@ -25,7 +25,7 @@ class World {
     // Vector! That's me, because I commit crimes with both...
     return {
       magnitude: noise.perlin2(x, y), // and
-      direction: noise.simplex2(x, y)
+      direction: noise.simplex2(x/10, y/10)*180
     }
   }
 }

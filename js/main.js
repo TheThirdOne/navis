@@ -8,7 +8,9 @@ class Game {
     
   }
   loop(){
-    this.view.render({f:1,r:.1,world:this.world,ship:this.ship});
+    let throttle = this.input.map.up?1:0, rudder = this.input.map.left?.1:(this.input.map.right?-.1:0);
+    this.ship.update(rudder,throttle);
+    this.view.render({f:throttle,r:rudder,world:this.world,ship:this.ship});
     requestAnimationFrame(this.loop.bind(this));
   }
 }
@@ -17,7 +19,18 @@ class Ship {
   constructor(){
     this.x = 30;
     this.y = 50;
-    this.direction = 0; // 0 degrees off of north
+    this.rotation = 0; // 0 degrees off of north
+  }
+  
+  update(turn,throttle){
+    
+    //TODO: more complex physics using the wind
+    var maxSpeed = .01;
+    
+    this.y += Math.cos(this.rotation/180*Math.PI)*maxSpeed*throttle;
+    this.x += Math.sin(this.rotation/180*Math.PI)*maxSpeed*throttle;
+    
+    this.rotation += turn;
   }
 }
 
