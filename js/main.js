@@ -26,9 +26,12 @@ var game = {};
 function onload(arr){
   // Add sea background
   var back = new createjs.Shape();
-  back.regX = stage.canvas.width/2; back.regY = stage.canvas.height/2
+  back.cX = back.regX = stage.canvas.width;
+  back.cY = back.regY = stage.canvas.width;
   back.x = stage.canvas.width/2;back.y = stage.canvas.height/2;
-  back.graphics.beginBitmapFill(arr[0],'repeat').rect(0,0,stage.canvas.width,stage.canvas.height);
+  back.tileX = 255;
+  back.tileY = 256;
+  back.graphics.beginBitmapFill(arr[0],'repeat').rect(0,0,stage.canvas.width*2,stage.canvas.width*2);
   stage.addChild(back);
 
   // Add Ship
@@ -72,10 +75,45 @@ function onload(arr){
   game.entities = {back,ship,compass,needle,wind};
   requestAnimationFrame(loop);
 }
-
+var f=0,r=0;
 function loop(){
-  game.entities.needle.rotation += .4;
-
+  moveWater(r,f);
   stage.update();
   requestAnimationFrame(loop);
+}
+
+
+function moveWater(rotation,forward){
+  // Move forward
+  game.entities.back.regX -= Math.sin(game.entities.back.rotation/180*Math.PI)*forward;
+  game.entities.back.regY -= Math.cos(game.entities.back.rotation/180*Math.PI)*forward;
+  
+  
+  // and rotate
+  game.entities.needle.rotation += rotation;
+  game.entities.back.rotation+=rotation;
+  
+  // Then snap back if needed
+  game.entities.back.regX -= Math.round((game.entities.back.regX-game.entities.back.cX)/game.entities.back.tileX)*game.entities.back.tileX;
+  game.entities.back.regY -= Math.round((game.entities.back.regY-game.entities.back.cY)/game.entities.back.tileY)*game.entities.back.tileY;
+}
+
+document.onkeydown = function(e){
+  if(e.keyCode == 38){
+    f = 1;
+  }else if(e.keyCode == 37){
+    r = 0.1;
+  }else if(e.keyCode == 39){
+    r = -0.1;
+  }
+}
+
+document.onkeyup = function(e){
+  if(e.keyCode == 38){
+    f = 0;
+  }else if(e.keyCode == 37){
+    r = 0;
+  }else if(e.keyCode == 39){
+    r = 0;
+  }
 }
