@@ -21,6 +21,13 @@ class World {
       this.structures.push(new Structure(this))
     }
   }
+  getWindVectorAt(x, y) {
+    // Vector! That's me, because I commit crimes with both...
+    return {
+      magnitude: noise.perlin2(x, y), // and
+      direction: noise.simplex2(x, y)
+    }
+  }
 }
 
 class Location {
