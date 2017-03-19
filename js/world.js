@@ -37,5 +37,4 @@ class World {
       this.islands.push(this.getRandomIsland())
     }
   }
-
 }

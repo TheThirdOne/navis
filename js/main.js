@@ -75,27 +75,38 @@ function onload(arr){
   game.entities = {back,ship,compass,needle,wind};
   requestAnimationFrame(loop);
 }
+
 var f=0,r=0;
+
 function loop(){
   moveWater(r,f);
+  // TODO: This is on you Ben
+  var shipX = shipY = 0
+  game.entities.wind.rotation = getWindVectorAt(shipX, shipY).direction+game.entities.back.rotation
   stage.update();
   requestAnimationFrame(loop);
 }
-
 
 function moveWater(rotation,forward){
   // Move forward
   game.entities.back.regX -= Math.sin(game.entities.back.rotation/180*Math.PI)*forward;
   game.entities.back.regY -= Math.cos(game.entities.back.rotation/180*Math.PI)*forward;
-  
-  
+
   // and rotate
   game.entities.needle.rotation += rotation;
   game.entities.back.rotation+=rotation;
-  
+
   // Then snap back if needed
   game.entities.back.regX -= Math.round((game.entities.back.regX-game.entities.back.cX)/game.entities.back.tileX)*game.entities.back.tileX;
   game.entities.back.regY -= Math.round((game.entities.back.regY-game.entities.back.cY)/game.entities.back.tileY)*game.entities.back.tileY;
+}
+
+function getWindVectorAt(x, y) {
+  // Vector! That's me, because I commit crimes with both...
+  return {
+    magnitude: noise.perlin2(x, y), // and
+    direction: noise.simplex2(x, y)
+  }
 }
 
 document.onkeydown = function(e){
