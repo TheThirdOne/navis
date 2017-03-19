@@ -8,7 +8,6 @@ radar.x = radar.y = 200;
 
 stage.update();
 
-
 function loadAll(srcs,onload){
   var out;
   var i = 0;
@@ -21,10 +20,8 @@ function loadAll(srcs,onload){
   out = srcs.map(src=>{var img = new Image(); img.onload = func; img.src = src; return img;})
 }
 
-
 loadAll(["assets/sea.jpg","assets/ship.png", "assets/compass_back.png", "assets/compass_needle.png","assets/wind.png"],onload);
 var game = {};
-
 
 function onload(arr){
   // Add sea background
@@ -33,7 +30,7 @@ function onload(arr){
   back.x = stage.canvas.width/2;back.y = stage.canvas.height/2;
   back.graphics.beginBitmapFill(arr[0],'repeat').rect(0,0,stage.canvas.width,stage.canvas.height);
   stage.addChild(back);
-  
+
   // Add Ship
   var ship = new createjs.Bitmap(arr[1]);
   ship.regX = 150;
@@ -41,7 +38,7 @@ function onload(arr){
   ship.x = stage.canvas.width/2;
   ship.y = stage.canvas.height/2;
   stage.addChild(ship);
-  
+
   var compass = new createjs.Bitmap(arr[2]);
   compass.regX = 150;
   compass.regY = 150;
@@ -50,7 +47,7 @@ function onload(arr){
   compass.x = stage.canvas.width-100;
   compass.y = stage.canvas.height/2;
   stage.addChild(compass);
-  
+
   var needle = new createjs.Bitmap(arr[3]);
   needle.regX = 150;
   needle.regY = 150;
@@ -59,8 +56,7 @@ function onload(arr){
   needle.x = stage.canvas.width-100;
   needle.y = stage.canvas.height/2;
   stage.addChild(needle);
-  
-  
+
   var wind = new createjs.Bitmap(arr[4]);
   wind.regX = 150;
   wind.regY = 150;
@@ -69,16 +65,17 @@ function onload(arr){
   wind.x = 100;
   wind.y = stage.canvas.height/4*3;
   stage.addChild(wind);
+
+  var world = new World()
+
   stage.update();
   game.entities = {back,ship,compass,needle,wind};
   requestAnimationFrame(loop);
 }
 
-
-
 function loop(){
   game.entities.needle.rotation += .4;
-  
+
   stage.update();
   requestAnimationFrame(loop);
 }
