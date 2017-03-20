@@ -25,8 +25,8 @@ class World {
   getWindVectorAt(x, y) {
     // Vector! That's me, because I commit crimes with both...
     return {
-      magnitude: noise.perlin2(x, y), // and
-      direction: noise.simplex2(x/10, y/10)*180
+      magnitude: noise.perlin2(x/100, y/100), // and
+      direction: noise.simplex2(x/100, y/100)*180
     }
   }
 }
