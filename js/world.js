@@ -1,9 +1,10 @@
 'use strict'
 
-const HEIGHT = 100
+// Height and width in boat units
+const HEIGHT = 300
 const WIDTH = 1000
 const SPARCITY = 100 // Higher means less islands
-const MINIMUM_DISTANCE = 1
+const MINIMUM_DISTANCE = 5
 const MAX_LOAD_TIME = 100
 
 class World {
@@ -40,6 +41,7 @@ class Location {
     }
     this.x = x
     this.y = y
+    this.r = 1
   }
 
   getOpenSpot(world, startTime = Date.now()) {
@@ -70,4 +72,23 @@ class Structure extends Location {
   constructor(world, x, y) {
     super(world, 'structure', x, y)
   }
+}
+
+
+function distance(a,b){
+  let dx = Math.abs(a.x-b.x);
+  if(dx > WIDTH/2){
+    dx = WIDTH-dx;
+  }
+  return (a.y-b.y)*(a.y-b.y) + dx*dx;
+}
+
+function angle(a,b){
+  let dx = a.x-b.x;
+  if(dx > WIDTH/2){
+    dx = WIDTH-dx;
+  }else if(dx < -WIDTH/2){
+    dx = -WIDTH-dx;
+  }
+  return Math.atan2(dx,a.y-b.y)
 }

@@ -25,7 +25,7 @@ class Ship {
   update(turn,throttle){
     
     //TODO: more complex physics using the wind
-    var maxSpeed = .01;
+    var maxSpeed = 1/60;
     
     this.y += Math.cos(this.rotation/180*Math.PI)*maxSpeed*throttle;
     this.x += Math.sin(this.rotation/180*Math.PI)*maxSpeed*throttle;

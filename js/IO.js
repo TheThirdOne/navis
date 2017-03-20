@@ -62,15 +62,21 @@ class View {
     wind.y = this.stage.canvas.height/4*3;
     this.stage.addChild(wind);
   
-    this.entities = {back,ship,compass,needle,wind};
-    
+    var radar = new createjs.Container();
+    radar.x = this.stage.canvas.width/2;
+    radar.y = this.stage.canvas.height/2;
+    this.stage.addChild(radar);
+    this.entities = {back,ship,compass,needle,wind,radar};
+
     then();
   }
   
   render(gameState){
     this.moveWater(gameState.r,gameState.f);
     this.entities.wind.rotation = gameState.world.getWindVectorAt(gameState.ship.x, gameState.ship.y).direction-gameState.ship.rotation;
-    this.entities.needle.rotation = -gameState.ship.rotation;
+    this.entities.needle.rotation = gameState.ship.rotation;
+    this.entities.radar.rotation = gameState.ship.rotation;
+    this.renderRadar(gameState.world.islands,gameState.ship)
     this.stage.update();
   }
   
@@ -88,9 +94,25 @@ class View {
     this.entities.back.regY -= Math.round((this.entities.back.regY-this.entities.back.cY)/this.entities.back.tileY)*this.entities.back.tileY;
   }
   
+  renderRadar(islands,ship){
+    this.entities.radar.removeAllChildren();
+    for(let isle of islands){
+      let dist = distance(isle,ship);
+    
+      if(dist < VIEWDIST){
+        dist = Math.sqrt(dist);
+        let ico = new createjs.Shape();
+        let delta = Math.atan2(isle.r,dist);
+        let ang = angle(ship,isle);
+        
+        ico.graphics.setStrokeStyle(6).beginStroke("#00AA00").arc(0, 0, 100, -ang-delta+Math.PI/2, -ang+delta+Math.PI/2, false);
+        this.entities.radar.addChild(ico);
+      }
+    }
+  }
 }
 
-
+const VIEWDIST = 100;
 class Input {
   constructor(mappings=[]) {
     let map = {};
